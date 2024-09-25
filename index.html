@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>literally digital piano</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Edu+AU+VIC+WA+NT+Guides:wght@400..700&display=swap" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+	<style>
+		html, body {
+			overflow: hidden;
+			height: 100%;
+			margin: 0;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: flex-end;
+		}
+		#title {
+			font-size: 3vw;
+			margin-bottom: 2vw; 
+			font-family: "Edu AU VIC WA NT Guides", cursive;
+  			font-optical-sizing: auto;
+  			font-weight: 400;
+ 			font-style: normal;
+		}
+		#button {
+			padding: 0.7vw 1.5vw; 
+			font-size: 1vw; 
+			color: white; 
+			background-color: black; 
+			border: none; 
+			border-radius: 0.25vw; 
+			cursor: pointer; 
+			transition: background-color 0.3s;
+			margin-bottom: 3vw;
+			font-family: "Roboto Mono", monospace;
+  			font-optical-sizing: auto;
+  			font-weight: 400;
+  			font-style: normal;
+		}
+		#button:hover{
+    		background: darkgray;
+    		cursor: pointer;
+		}
+		#piano {
+			display: flex;
+			width: 100vw; 
+			height: 25vw; 
+			position: relative;
+			transition: transform 0.5s; 
+			transform: translateY(100%); 
+		}
+		#piano.visible {
+			transform: translateY(0);
+		}
+		.key {
+			flex: 1; 
+			background-color: white;
+			border: 0.2vw solid #000; 
+			position: relative;
+		}
+		.key.black {
+			width: 10%; 
+			height: 60%; 
+			background-color: black;
+			position: absolute;
+			z-index: 1; 
+		}
+		
+		.key.black#CSharp { left: 70%; transform: translateX(-605%); } /* C# 위치 */
+		.key.black#DSharp { left: 85%; transform: translateX(-630%); } /* D# 위치 */
+		.key.black#FSharp { left: 50%; transform: translateX(-50%); } /* F# 위치 */
+		.key.black#GSharp { left: 75%; transform: translateX(-170%); } /* G# 위치 */
+		.key.black#ASharp { left: 90%; transform: translateX(-195%); } /* A# 위치 */
+		.label {
+			position: absolute;
+			bottom: 2vw;
+			left: 50%;
+			transform: translateX(-50%);
+			font-size: 1vw;
+			font-family: "Roboto Mono", monospace;
+  			font-optical-sizing: auto;
+  			font-weight: <weight>;
+  			font-style: normal;
+		}
+		.label2 {
+			position: absolute;
+			bottom: 2vw; 
+			left: 50%;
+			transform: translateX(-50%);
+			font-size: 1vw;
+			color: white;
+			font-family: "Roboto Mono", monospace;
+  			font-optical-sizing: auto;
+  			font-weight: <weight>;
+  			font-style: normal;
+		}
+		.key:not(.black):hover{
+    		background: lightgray;
+    		cursor: pointer;
+		}
+		#pt {
+			font-size: 1.2vw; 
+			margin-bottom: 3vw; 
+			transition: opacity 0.3s;
+			font-family: "Roboto Mono", monospace;
+  			font-optical-sizing: auto;
+  			font-weight: <weight>;
+  			font-style: normal;
+		}
+		.circle {
+			width: 1vw; 
+			height: 1vw;
+			background-color: darkgray; 
+			border-radius: 50%; 
+			position: absolute; 
+			top: -2vw; 
+			left: 50%; 
+			transform: translateX(-50%);
+			opacity: 0; 
+			transition: opacity 0.5s; 
+		}
+		#circle-visible {
+			opacity: 1;
+		}
+		.circle:hover{
+    		background: lightgray;
+    		cursor: pointer;
+		}
+		#air {
+			display: none;
+			position: absolute;
+			top: 2.5vw; 
+			left: 50%; 
+			transform: translateX(-50%); 
+			max-width: 60%; 
+			max-height: 30%; 
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+			transition: opacity 0.5s; 
+		}
+	</style>
+</head>
+<body>
+	<div id="title">literally digital piano</div>
+	<button id="button" class="On" onclick="toggleButton(this)">On</button>
+	<div id="pt" style="opacity: 0;">
+		Let's play your song!</div>
+	</div>
+	<img src="1584959655319.jpg" id="air">
+	<div id="piano">
+		<div class="key" id="C" onclick="playSound('C.mp3')"><div class="label">C</div></div> <!-- C -->
+		<div class="key black" id="CSharp"><div class="label2">C#</div></div> <!-- C# -->
+		<div class="key" id="D" onclick="playSound('D.mp3')"><div class="label">D</div></div> <!-- D -->
+		<div class="key" id="E" onclick="playSound('E.mp3')"><div class="label">E</div></div> <!-- E -->
+		<div class="key black" id="DSharp"><div class="label2">D#</div></div> <!-- D# -->
+		<div class="key" id="F" onclick="playSound('F.mp3')"><div class="label">F</div></div> <!-- F -->
+		<div class="key black" id="FSharp"><div class="label2">F#</div></div> <!-- F# -->
+		<div class="key" id="G" onclick="playSound('G.mp3')"><div class="label">G</div></div> <!-- G -->
+		<div class="key black" id="GSharp"><div class="label2">G#</div></div> <!-- G# -->
+		<div class="key" id="A" onclick="playSound('A.mp3')"><div class="label">A</div></div> <!-- A -->
+		<div class="key black" id="ASharp"><div class="label2">A#</div></div> <!-- A# -->
+		<div class="key" id="B" onclick="playSound('B.mp3')"><div class="label">B</div></div> <!-- B -->
+		<div class="key" id="C_Octave" onclick="playSound('C_Octave.mp3')"><div class="label">C</div></div> <!-- C (octave) -->
+		<div class="circle" id="circle" onclick="toggleImage()"></div>
+	</div>
+	<audio id="audio" src=""></audio>
+	<script>
+      function toggleButton(button) {
+            const piano = document.getElementById('piano');
+            const pt = document.getElementById('pt');
+            const circle = document.getElementById('circle');
+            button.classList.toggle('On');
+            button.textContent = button.classList.contains('On') ? 'On' : 'Off';
+            if (button.classList.contains('On')) {
+                piano.classList.remove('visible'); 
+                pt.style.opacity = 0;
+                circle.style.opacity = 0; 
+            } else {
+                piano.classList.add('visible'); 
+                pt.style.opacity = 1; 
+                circle.style.opacity = 1; 
+            }
+        }
+
+		function toggleImage() {
+			const air = document.getElementById('air');
+			air.style.display = (air.style.display === 'none' || air.style.display === '') ? 'block' : 'none'; 
+			air.style.opacity = air.style.opacity === '1' ? '0' : '1'; // 
+		}
+
+		function playSound(file) {
+			const audio = document.getElementById('audio');
+			audio.src = file;
+			audio.play();
+		}
+	</script>
+</body>
+</html>
